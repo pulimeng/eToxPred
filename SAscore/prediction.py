@@ -1,53 +1,38 @@
+# -*- coding: utf-8 -*-
+"""
+Predict the SAscore of a chemical compound with the trained DBN.
+The trained model (.pkl file) is loaded at line 20
+
+@author: Limeng Pu
+"""
+
 import pickle
 import theano
 import numpy
-import random
 from theano.gof import graph
-from dbn import DBN
+import theano.sandbox.cuda
+import random
+from sa_dbn import DBN
 
-with open('sa-data-part.pkl', 'rb') as in_strm:
+#device = 'cpu'
+#theano.sandbox.cuda.use(device)
+
+# load the data
+with open('/home/limeng/Desktop/toxicity/SA score prediction/code/sa-part-resampled.pkl', 'rb') as in_strm:
     data = pickle.load(in_strm)
-sa = data[1]
-keys = ['1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9','9-10']
-def hist_counts(sa,keys):
-    freq_dict = dict.fromkeys(keys,[])
-    for k in range(len(sa)):
-        item = sa[k]
-        item = item * 10
-        idx = round(item)
-        if idx - item >0:
-            real_key = keys[int(idx-1-1)]
-        if idx - item <0:
-            real_key = keys[int(idx-1)]
-        freq_dict[real_key]=freq_dict[real_key]+[k]
-    return freq_dict
 
-freq_dict = hist_counts(sa,keys)
+# select a compound for prediction
+X = data[0][200]
+X = numpy.reshape(X,(1,1024))
+y = data[1][200]
 
-def rand_draw(freq_dict,data):
-    my_x = []
-    my_y = []
-    for k in range(9):
-        temp_key = keys[k]
-        temp_list = freq_dict[temp_key]
-        l = len(temp_list)
-        idx = random.randint(0,l)
-        v = temp_list[idx]
-        my_x.append(data[0][v])
-        my_y.append(data[1][v])
-    my_x = numpy.asarray(my_x)
-    my_y = numpy.asarray(my_y)
-    draw = (my_x,my_y)
-    return draw
-
-def predict(X_test, filename='best_model_reg_1.pkl'):
+# prediction function
+def predict(X_test, filename='trained_model.pkl'):
     # load the saved model
-    model_file = open(filename, 'rb')
     with open(filename, 'rb') as in_strm:
         regressor = pickle.load(in_strm)
-    model_file.close()
+    in_strm.close()
     y_pred = regressor.linearLayer.y_pred
-
     # find the input to theano graph
     inputs = graph.inputs([y_pred])
     # select only x
@@ -60,12 +45,13 @@ def predict(X_test, filename='best_model_reg_1.pkl'):
     predicted_values = predict_model(X_test)
     return predicted_values
 
-draw = rand_draw(freq_dict,data)
-predicted_values = predict(draw[0],'best_model_3.pkl')
-true_values = draw[1]
-
-predicted_values = numpy.asarray(predicted_values*10)
-true_values = numpy.asarray(true_values*10)
+# prediction
+predicted_values = predict(X,'trained_model_cpu.pkl') # if cuda is not installed, use the trained_model_cpu
+true_values = y
+# the SAscore here is between 0 and 1 to suit the range of the activation function
+# the following line converts the output to between 1 and 10
+predicted_values = numpy.asscalar(predicted_values*10)
+true_values = true_values*10
 print('Predicted value: ' + str(predicted_values) +
-        ' True value: ' + str(true_values) +
-        ' Absolute error: ' + str(numpy.absolute(predicted_values-true_values)))
+        '\nTrue value: ' + str(true_values) +
+        '\nAbsolute error: ' + str(numpy.asscalar(numpy.absolute(predicted_values-true_values))))

@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+"""
+The last layer of the DBN serve as a linear regression instead of a logistic regression.
+MSE is used as the cost function.
+l-2 regularization is employed. The default setting of lamda1 and lamda2 are 0.01, which can be changed in line 52.
+
+@author: Limeng Pu
+"""
+
 import theano
 import numpy
 import theano.tensor as T

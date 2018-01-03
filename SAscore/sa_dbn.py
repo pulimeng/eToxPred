@@ -11,15 +11,16 @@ import numpy
 import theano
 import theano.tensor as T
 from theano.sandbox.rng_mrg import MRG_RandomStreams
-import theano.sandbox.cuda
+#import theano.sandbox.cuda
 
 from SemiLastLayer import SemiLastLayer
 from mlp import HiddenLayer
 from rbm import RBM
 from sa_logistic_sgd import load_data, test_load_data
 
-device = 'gpu2'
-theano.sandbox.cuda.use(device)
+# change the device accordingly
+#device = 'cpu'
+#theano.sandbox.cuda.use(device)
 
 
 # start-snippet-1
@@ -301,11 +302,9 @@ def save(obj, path):
     print('save model to path %s' % path)
     return None
 
-target = open('logfile.txt','w')
-
 def test_DBN(finetune_lr=0.2, pretraining_epochs=20,
-             pretrain_lr=0.01, k=1, training_epochs=1000,
-             dataset='sa-part-resampled.pkl', batch_size=50):
+         pretrain_lr=0.01, k=1, training_epochs=1000,
+         dataset='/home/limeng/Desktop/toxicity/SA score prediction/code/sa-part-resampled.pkl', batch_size=50):
     """
     Demonstrates how to train and test a Deep Belief Network.
 
@@ -332,7 +331,7 @@ def test_DBN(finetune_lr=0.2, pretraining_epochs=20,
     train_set_x, train_set_y = datasets[0]
     valid_set_x, valid_set_y = datasets[1]
     test_set_x, test_set_y = datasets[2]
-    
+
     # compute number of minibatches for training, validation and testing
     n_train_batches = train_set_x.get_value(borrow=True).shape[0] // batch_size
 
@@ -340,8 +339,8 @@ def test_DBN(finetune_lr=0.2, pretraining_epochs=20,
     numpy_rng = numpy.random.RandomState(123)
     print('... building the model')
     # construct the Deep Belief Network
-    dbn = DBN(numpy_rng=numpy_rng, n_ins= 1024,
-              hidden_layers_sizes=[1024,512,256,128,64,32],
+    dbn = DBN(numpy_rng=numpy_rng, n_ins=1024,
+              hidden_layers_sizes=[1024, 512, 256, 128, 64, 32],
               n_outs=1)
 
     # start-snippet-2
@@ -367,8 +366,6 @@ def test_DBN(finetune_lr=0.2, pretraining_epochs=20,
             print('Pre-training layer %i, epoch %d, cost ' % (i, epoch), end=' ')
             print(numpy.mean(c))
             pretrain_logstring = 'Pre-training layer %i, epoch %d, cost ' % (i, epoch) + str(numpy.mean(c))
-            target.write(pretrain_logstring)
-            target.write('\n')
 
     end_time = timeit.default_timer()
     # end-snippet-2
@@ -447,20 +444,15 @@ def test_DBN(finetune_lr=0.2, pretraining_epochs=20,
                            'best model %f ') %
                           (epoch, minibatch_index + 1, n_train_batches,
                           test_score))
-
-                    save(dbn, 'best_model_reg_3.pkl')
+                    # this line saves the trained model
+                    save(dbn, 'trained_model_cpu.pkl')
                     print('Model saved!!!')
-
-                    finetune_logstring = 'epoch ' + str(epoch) + ' test error of best model ' + str(test_score)
-                    target.write(finetune_logstring)
-                    target.write('\n')
 
             if patience <= iter:
                 done_looping = True
                 break
 
     end_time = timeit.default_timer()
-    target.close()
     print(('Optimization complete with best validation score of %f , '
            'obtained at iteration %i, '
            'with test performance %f '
