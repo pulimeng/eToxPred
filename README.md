@@ -14,3 +14,6 @@ Limeng Pu, Misagh Naderi, Tairan Liu, Hsiao-Chun Wu, Supratik Mukhopadhyay, and 
 4. scikit-learn 0.18.1 or higher
 5. Openbabel 2.3.1
 6. (Optional) CUDA 8.0 or higher
+
+
+# Usage:
