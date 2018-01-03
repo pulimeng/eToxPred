@@ -5,7 +5,7 @@ This README file is written by Limeng PU.
 
 If you find this tool is useful to you, please cite this paper:
 
-
+Limeng Pu, Misagh Naderi, Tairan Liu, Hsiao-Chun Wu, Supratik Mukhopadhyay, and Michal Brylinski. "eToxPred: A Machine Learning-Based Approach to Estimate the Yoxicity of Drug Candidates."
 
 # Prerequisites:
 1. Python 2.7+ or Python 3.5+
