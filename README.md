@@ -22,6 +22,10 @@ The software package contains 2 parts:
 1. SAscore prediction (in the folder SAscore)
 2. Toxicity prediction (in the folder toxicity)
 
+To use the package:
+1. Download and extract the package. Make sure etoxpred.py and the other two folders (SAscore and toxicity) are in the same folder. Otherwise you have to chagne the path in the etoxpred.py (line 13 and 14).
+
+
 ===================================================
 
 SAscore prediction:
