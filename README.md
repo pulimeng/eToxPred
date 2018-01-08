@@ -47,6 +47,7 @@ To use the package to train your own models:
     - `min_samples_leaf`: The minimum number of samples required to be at a leaf node.
     - `max_features`: The number of features to consider when looking for the best split.
     - `min_samples_split`: The minimum number of samples required to split an internal node.
+  - The tuning range can be set in the `setgrid()` function in `xtrees_param_tune.py`.
   - The best set of parameters will be printed and the model will be saved as `best_tox_model.pkl`. Note that this step might take a long time. Progress will be printed in between.
 
 # Datasets:
