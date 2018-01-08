@@ -50,3 +50,11 @@ To use the package to train your own models:
       - `min_samples_split`: The minimum number of samples required to split an internal node.
     - The best set of parameters will be printed. Note that this step might take a long time. Progress will be printed in between.
   - Use the tuned parameters to train the model. Change the parameters accordingly in the `xtrees.py` in the toxicity folder at line . Then run `python xtrees.py`. The trained model will be saved as a .pkl file that can be load using joblib in `scikit-learn`.
+  
+  
+  
+  
+
+# Datasets:
+
+An example dataset in the .sdf format is provided in `fda_approved_nr.sdf`. Dataset for toxicity prediction is provided in toxicity folder. The dataset for SAscore prediction can be found at
