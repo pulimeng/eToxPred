@@ -33,11 +33,9 @@ def argdet():
         print('Need input file!')
         exit()
     if len(sys.argv) == 3:
-        print('No output file will be produced!')
         args = myargs()
         return args
     if len(sys.argv) == 5:
-        print('Output file is produced!')
         args = myargs()
         return args
     else:
