@@ -27,7 +27,7 @@ To use the trained models for predictinos:
 2. Run the eToxPred by `python etoxpred.py -i fda_approved_nr.sdf -o output`
   - the first input argument `-i` specifies the input .sdf file which stores the SMILES data.
   - the second input argument `-o` specifies the output file to store the predicted SAscores and Tox-scores. Note that no file extension is needed since the program will produce two files `output_sa.txt` and `output_tox.txt` to store the predicted values respectively.
-3. The corresponding trianed models are in SAscore and toxicity folders respectively. The `trained_model_gpu.pkl` can be used whe the GPU is supported by CUDA.
+3. The corresponding trianed models are in SAscore and toxicity folders respectively. The `trained_model_gpu.pkl` can be used when CUDA is installed and properly configured.
 
 To use the package to train your own models:
 1. Prepare the training dataset. For 
