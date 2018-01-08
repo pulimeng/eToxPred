@@ -33,7 +33,7 @@ To use the package to train your own models:
 1. Prepare the training dataset. The dataset contains two parts: the fingerprints and the label. The label can be the binary class labels for toxicity prediction or the SAscores. The dataset has to be stored in a .pkl file, which is a serialized Python structure used to store many objects.
 2. Train the DBN for SAscore prediction. Run the `sa_dbn.py` in the SAscore folder by `python sa_dbn.py -i your_training_set.pkl`
   - The input arguement is the path to your training datset.
-  - The data will be shuffled automatically and split into training, testing, and validation sets (60%/20%/20%).
+  - The data will be randomly split into training, testing, and validation sets (60%/20%/20%).
   - The parameters of the DBN can be changed in `sa_dbn.py` at line 471.
     - `finetune_lr is` the learning rate used in finetune stage. Default is 0.2.
     - `pretrainig_epochs` is the epochs employed in the pretraining stage. Default is 20.
@@ -49,11 +49,7 @@ To use the package to train your own models:
       - `max_features`: The number of features to consider when looking for the best split.
       - `min_samples_split`: The minimum number of samples required to split an internal node.
     - The best set of parameters will be printed. Note that this step might take a long time. Progress will be printed in between.
-  - Use the tuned parameters to train the model. Change the parameters accordingly in the `xtrees.py` in the toxicity folder at line . Then run `python xtrees.py`. The trained model will be saved as a .pkl file that can be load using joblib in `scikit-learn`.
-  
-  
-  
-  
+  - Use the tuned parameters to train the model. Change the parameters accordingly in the `xtrees.py` in the toxicity folder at line . Then run `python xtrees.py -i your_training_set.pkl`. The trained model will be saved as a .pkl file that can be load using joblib in `scikit-learn`.
 
 # Datasets:
 
