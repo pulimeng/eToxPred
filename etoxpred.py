@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
 eToxPred: 
@@ -51,11 +52,11 @@ def myargs():
     return args
 
 def write2file(filename, predicted_values, proba):
-    sa_filename = filename[0:-4] + '_sa.txt'
+    sa_filename = filename + '_sa.txt'
     with open(sa_filename, 'w') as sa_output_file:
         np.savetxt(sa_filename, predicted_values, fmt = '%1.4f')
     sa_output_file.close()
-    tox_filename = filename[0:-4] + '_tox.txt'
+    tox_filename = filename + '_tox.txt'
     with open(tox_filename, 'w') as tox_output_file:
         np.savetxt(tox_filename, proba, fmt = '%1.4f')
     tox_output_file.close()
