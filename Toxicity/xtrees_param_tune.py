@@ -12,33 +12,38 @@ import pickle
 import numpy as np
 from itertools import cycle
 
+import argparse
+
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.metrics import matthews_corrcoef, confusion_matrix
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedKFold, train_test_split
+from sklearn.externals import joblib
+
+def myargs():
+    parser = argparse.ArgumentParser()                                              
+    parser.add_argument('--input', '-i', required = True, help = 'input filename')
+    args = parser.parse_args()
+    return args
 
 # load the .mat format data
-with open('toxicity_train.pkl', 'rb') as train_file:
-    train_data = pickle.load(train_file)
-    X = train_data[0]
-    y = train_data[1]
-with open('toxicity_test.pkl', 'rb') as test_file:
-    test_data = pickle.load(test_file)
-    Xt = test_data[0]
-    yt = test_data[1]
+def load_data(path):
+    with open(path, 'rb') as train_file:
+        train_data = pickle.load(train_file)
+        fps = train_data[0]
+        labels = train_data[1]
+        X, Xt, y, yt = train_test_split(fps, labels, random_state=233)
+    return X, Xt, y, yt
 
 # set the parameters' range for the search
-mtry = np.linspace(10, 100, 91) # max_features
-mtry = mtry.astype('uint8')
-ml = np.linspace(3, 20, 18) # min_leaf
-ml = ml.astype('uint8')
-ms = np.linspace(5, 20, 16) # min_split
-ms = ms.astype('uint8')
-
-# create evaluation matrices
-evaluation_list = []
-tprs = np.zeros((len(ml), len(ms)))
-fprs = np.zeros((len(ml), len(ms)))
-mccs = np.zeros((len(ml), len(ms)))
+def setgrid():
+    mtry = np.linspace(10, 100, 91) # max_features
+    mtry = mtry.astype('uint8')
+    ml = np.linspace(3, 20, 18) # min_leaf
+    ml = ml.astype('uint8')
+    ms = np.linspace(5, 20, 16) # min_split
+    ms = ms.astype('uint8')
+    grid = (mtry,ml,ms)
+    return grid
 
 # predict the toxicity using different threshold of the Tox-score
 def predict_th(probs, th):
@@ -69,53 +74,82 @@ def ind2sub(array_shape, ind):
     cols = cols.astype('uint8')
     return (rows, cols)
 
-# 5-fold cross-validation
-cv = StratifiedKFold(n_splits = 5)
-
-for i in range(len(mtry)):
-    temp_mtry = mtry[i]
-    print('Current mtry is: '+str(temp_mtry))
-    for j in range(len(ml)):
-        for k in range(len(ms)):
-            temp_ml = ml[j]
-            temp_ms = ms[k]
-            ext = ExtraTreesClassifier(n_estimators=500, max_depth=None,
-                               min_samples_leaf=temp_ml, max_features=temp_mtry,
-                               min_samples_split=temp_ms)
-            mcc_tr = np.zeros([101, ])
-            ths = np.linspace(0, 1, 101)
-            colors = cycle(['cyan', 'indigo', 'seagreen', 'yellow', 'blue'])
-            i = 0
-            for (train, test), color in zip(cv.split(X, y), colors):
-                probas_tr = ext.fit(X[train], y[train]).predict_proba(X[test])
-                pred = predict_th(probas_tr, ths)
+def update(old_mcc, mcc, mtry, ml, ms):
+    if mcc > old_mcc:
+        best_mcc = mcc
+        best_mtry = mtry
+        best_ml = ml
+        best_ms = ms
+        return best_mcc, best_mtry, best_ml, best_ms
+    else:
+        return old_mcc, mtry, ml, ms
+    
+def start_tuning(path, grid):
+    X, Xt, y, yt = load_data(path)
+    cv = StratifiedKFold(n_splits = 5)
+    # create evaluation matrices
+    evaluation_list = []
+    mtry = grid[0]
+    ml = grid[1]
+    ms = grid[2]
+    mccs = np.zeros((len(ml), len(ms)))
+    current_mcc = 0
+    for item in mtry:
+        temp_mtry = item
+        print('Current mtry is: '+str(temp_mtry))
+        for j in range(len(ml)):
+            for k in range(len(ms)):
+                temp_ml = ml[j]
+                temp_ms = ms[k]
+                ext = ExtraTreesClassifier(n_estimators=500, max_depth=None,
+                                   min_samples_leaf=temp_ml, max_features=temp_mtry,
+                                   min_samples_split=temp_ms)
+                mcc_tr = np.zeros([101, ])
+                ths = np.linspace(0, 1, 101)
+                colors = cycle(['cyan', 'indigo', 'seagreen', 'yellow', 'blue'])
+                i = 0
+                for (train, test), color in zip(cv.split(X, y), colors):
+                    probas_tr = ext.fit(X[train], y[train]).predict_proba(X[test])
+                    pred = predict_th(probas_tr, ths)
+                    pred = pred.astype('uint8')
+                    true = y[test]
+                    mcc_tr += compute_mcc(true,pred)
+                    i += 1
+                mean_mcc_tr = mcc_tr/6
+                idx = list(mean_mcc_tr).index(max(mean_mcc_tr))
+                probas_ext = ext.fit(X, y).predict_proba(Xt)
+                pred = predict_th(probas_ext, [ths[idx]])
                 pred = pred.astype('uint8')
-                true = y[test]
-                mcc_tr += compute_mcc(true,pred)
-                i += 1
-            mean_mcc_tr = mcc_tr/6
-            idx = list(mean_mcc_tr).index(max(mean_mcc_tr))
-            probas_ext = ext.fit(X, y).predict_proba(Xt)
-            pred = predict_th(probas_ext, [ths[idx]])
-            pred = pred.astype('uint8')
-            cnf = confusion_matrix(yt, pred)
-            mcc_ext = matthews_corrcoef(yt, pred)
-            TP1 = cnf[1][1]
-            FP1 = cnf[0][1]
-            FN1 = cnf[1][0]
-            TN1 = cnf[0][0]
-            fpr1 = float(FP1/(FP1+TN1))
-            tpr1 = float(TP1/(TP1+FN1))
-            mccs[j, k] = mcc_ext
-            tprs[j, k] = tpr1
-            fprs[j, k] = fpr1
-    metrics = [mccs, tprs, fprs]
-    min_mcc = mccs.min()
-    print('The minimum MCC is: '+str(min_mcc))
-    min_mcc_idx = mccs.argmin()
-    r, c = ind2sub(mccs.shape, min_mcc_idx)
-    best_ml = ml[r]
-    best_ms = ms[c]
-    print('The best ml is: '+str(best_ml))
-    print('The best ms is: '+str(best_ms))
-    evaluation_list.append(metrics)
+                mcc_ext = matthews_corrcoef(yt, pred)
+                mccs[j, k] = mcc_ext
+        metrics = mccs
+        max_mcc = mccs.max()
+        print('The maximum MCC is: '+str(max_mcc))
+        max_mcc_idx = mccs.argmax()
+        r, c = ind2sub(mccs.shape, max_mcc_idx)
+        best_ml = ml[r]
+        best_ms = ms[c]
+        print('The best ml is: '+str(best_ml))
+        print('The best ms is: '+str(best_ms))
+        evaluation_list.append(metrics)
+        best_mcc, best_mtry, best_ml, best_ms = update(current_mcc, max_mcc, temp_mtry, best_ml, best_ms)
+        current_mcc = best_mcc
+    return best_mcc, best_mtry, best_ml, best_ms
+    
+    
+def save_best_model(path,mtry,ml,ms):
+    with open(path, 'rb') as train_file:
+        train_data = pickle.load(train_file)
+        X = train_data[0]
+        y = train_data[1]
+    ext = ExtraTreesClassifier(n_estimators=500, max_depth=None,
+                                   min_samples_leaf=ml, max_features=mtry,
+                                   min_samples_split=ms)
+    ext.fit(X,y)
+    joblib.dump(ext,'best_tox_model.pkl')
+
+if __name__ == "__main__":
+    args = myargs()
+    grid = setgrid()
+    best_mcc, best_mtry, best_ml, best_ms = start_tuning(args.input ,grid)
+    save_best_model(args.input,best_mtry, best_ml, best_ms)
