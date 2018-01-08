@@ -45,4 +45,5 @@ To use the package to train your own models:
   - Select the best parameters automatically. Run `xtrees_param_tune.py` in the toxicity folder by `python xtrees_param_tube.py -i your_training_set.pkl`.
     - The input arguement is the path to your training datset.
     - The parameters to be tuned are:
-      - `inp`
+      - min_samples_leaf
+      - 
