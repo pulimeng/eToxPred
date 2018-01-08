@@ -445,7 +445,7 @@ def test_DBN(finetune_lr=0.2, pretraining_epochs=20,
                           (epoch, minibatch_index + 1, n_train_batches,
                           test_score))
                     # this line saves the trained model
-                    save(dbn, 'trained_model_cpu.pkl')
+                    save(dbn, 'best_sa_model_cpu.pkl')
                     print('Model saved!!!')
 
             if patience <= iter:
