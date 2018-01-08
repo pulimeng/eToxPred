@@ -22,5 +22,8 @@ The software package contains 2 parts:
 1. SAscore prediction (in the folder SAscore)
 2. Toxicity prediction (in the folder toxicity)
 
-To use the package:
+To use the trained models for predictinos:
 1. Download and extract the package. Make sure etoxpred.py and the other two folders (SAscore and toxicity) are in the same folder. Otherwise you have to chagne the path in the etoxpred.py (line 13 and 14).
+2. Run the etoxpre.py `python etoxpred.py -i fda_approved_nr.sdf -o output`
+  - the first input argument `-i` specifies the input .sdf file which stores the SMILES data.
+  - the second input argument `-o` specifies the output file to store the predicted SAscores and Tox-scores. Note that no file extension is needed since the program will produce two files `output_sa.txt` and `output_tox.txt` to store the predicted values respectively.
