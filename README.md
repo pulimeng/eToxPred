@@ -45,5 +45,8 @@ To use the package to train your own models:
   - Select the best parameters automatically. Run `xtrees_param_tune.py` in the toxicity folder by `python xtrees_param_tube.py -i your_training_set.pkl`.
     - The input arguement is the path to your training datset.
     - The parameters to be tuned are:
-      - min_samples_leaf
-      - 
+      - `min_samples_leaf`: The minimum number of samples required to be at a leaf node.
+      - `max_features`: The number of features to consider when looking for the best split.
+      - `min_samples_split`: The minimum number of samples required to split an internal node.
+    - The best set of parameters will be printed. Note that this step might take a long time.
+  - Use the tuned parameters to train the model. Change the parameters accordingly in the `xtrees.py` in the toxicity folder at line . Then run `python xtrees.py`. The trained model will be saved as a .pkl file that can be load using joblib in `scikit-learn`.
