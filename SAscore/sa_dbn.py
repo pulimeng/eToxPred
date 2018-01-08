@@ -470,4 +470,4 @@ if __name__ == '__main__':
     args = myargs()
     test_DBN(finetune_lr=0.2, pretraining_epochs=20,
          pretrain_lr=0.01, k=1, training_epochs=1000,
-         dataset=args.input, batch_size=50)
+         dataset=args.input, batch_size=50) # chagne the parameters here.
