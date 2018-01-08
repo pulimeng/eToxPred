@@ -24,8 +24,8 @@ The software package contains 2 parts:
 
 To use the trained models for predictinos:
 1. Download and extract the package. Make sure `etoxpred.py` and the other two folders (SAscore and toxicity) are in the same folder. Otherwise you have to chagne the path in the `etoxpred.py` (line 13 and 14).
-2. Run the eToxPred by `python etoxpred.py -i fda_approved_nr.sdf -o output`
-  - the first input argument `-i` specifies the input .sdf file which stores the SMILES data.
+2. Run the eToxPred by `python etoxpred.py -i example_data.smi -o output`
+  - the first input argument `-i` specifies the input .smi file which stores the SMILES data.
   - the second input argument `-o` specifies the output file to store the predicted SAscores and Tox-scores. Note that no file extension is needed since the program will produce two files `output_sa.txt` and `output_tox.txt` to store the predicted values respectively.
 3. The corresponding trianed models are in SAscore and toxicity folders respectively. The `trained_model_gpu.pkl` can be used when CUDA is installed and properly configured.
 
@@ -52,4 +52,4 @@ To use the package to train your own models:
 
 # Datasets:
 
-An example dataset that can be used for prediction (in the .sdf format) is provided in `fda_approved_nr.sdf`. The ready to used dataset for ET training is provided in toxicity folder `toxicity_train.pkl`. The dataset for DBN training can be found at
+An example dataset that can be used for prediction (in the .smi format) is provided in `example_data.smi`. The ready to used dataset for ET training is provided in toxicity folder `toxicity_train.pkl`. The dataset for DBN training can be found at
