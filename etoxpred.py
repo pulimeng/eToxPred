@@ -25,22 +25,30 @@ from sa_dbn import DBN
 
 from sklearn.externals import joblib
 
-def inputfile():
-    parser = argparse.ArgumentParser()                                               
-    parser.add_argument("--file", "-i", type=str, required=True)
-    args = parser.parse_args()
-    return args.file
+def argdet():
+    if len(sys.argv) == 1:
+        print('Need input file!')
+        exit()
+    if len(sys.argv) == 2:
+        print('No output file will be produced!')
+        args = myargs()
+        return args
+    if len(sys.argv) == 3:
+        print('Output file is produced!')
+        args = myargs()
+        return args
 
-def outputfile():
-    parser = argparse.ArgumentParser()                                               
-    parser.add_argument("--file", "-o", type=str, required=False)
+def myargs():
+    parser = argparse.ArgumentParser()                                              
+    parser.add_argument('infile', type=argparse.FileType('r'), default=sys.stdin)
+    parser.add_argument('outfile', nargs='?', type=argparse.FileType('w'), default=sys.stdout)
     args = parser.parse_args()
-    return args.file
+    return args
 
 def write2file(filename):
-    target = open(filename, 'w')
-    output_string = 'Predicted SAscore is: ' + str(predicted_values)+'\nTox-score is: '+ str(proba)
-    target.write(output_string)
+    output_string = 'Predicted SAscore is: ' + str(predicted_values)+'\nTox-score is: '+ str(proba) + '\n'
+    with open(filename, 'w') as output_file:
+        output_file.write(output_string)
 
 # load the data from a .sdf file
 def bits2string(x):
@@ -98,9 +106,9 @@ def predict(X_test, sa_model = 'sa_trained_model.pkl', tox_model = 'tox_trained_
     return predicted_values,proba
 
 if __name__ == "__main__":
-    input_file_name = inputfile()
-    X = load_data(input_file_name)
+    args = argdet()
+    X = load_data(args.infile.name)
     predicted_values,proba = predict(X,'SA_trained_model_cpu.pkl','Tox_trained_model.pkl') # if cuda is not installed, use the trained_model_cpu
     print('Predicted SAscore is: ' + str(predicted_values))
     print('Tox-score is: '+str(proba))
-    output_file_name = outputfile()
+    write2file(args.outfile.name)
