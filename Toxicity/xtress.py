@@ -5,18 +5,25 @@ Demo on trianing and testing the Extremely randomized trees using scikit-learn p
 @author: Limeng Pu
 """
 
-import scipy.io as sio
+from __future__ import division
+
+import pickle
 import numpy as np
+
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
 
 # load the .mat format data
-content = sio.loadmat('toxicity_train.mat')
-y = content['y']
-y = np.ravel(y)
-X = content['X']
+with open('toxicity_train.pkl', 'rb') as train_file:
+    train_data = pickle.load(train_file)
+    X = train_data[0]
+    y = train_data[1]
+with open('toxicity_test.pkl', 'rb') as test_file:
+    test_data = pickle.load(test_file)
+    Xt = test_data[0]
+    yt = test_data[1]
 
 # random train-test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)

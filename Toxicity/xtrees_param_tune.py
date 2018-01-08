@@ -8,7 +8,7 @@ based on the ROC curve and the MCC.
 
 from __future__ import division
 
-import scipy.io as sio
+import pickle
 import numpy as np
 from itertools import cycle
 
@@ -17,14 +17,14 @@ from sklearn.metrics import matthews_corrcoef, confusion_matrix
 from sklearn.model_selection import StratifiedKFold
 
 # load the .mat format data
-content = sio.loadmat('toxicity_train.mat')
-y = content['y']
-y = np.ravel(y)
-X = content['X']
-content = sio.loadmat('toxicity_test.mat')
-yt = content['y']
-yt = np.ravel(yt)
-Xt = content['X']
+with open('toxicity_train.pkl', 'rb') as train_file:
+    train_data = pickle.load(train_file)
+    X = train_data[0]
+    y = train_data[1]
+with open('toxicity_test.pkl', 'rb') as test_file:
+    test_data = pickle.load(test_file)
+    Xt = test_data[0]
+    yt = test_data[1]
 
 # set the parameters' range for the search
 mtry = np.linspace(10, 100, 91) # max_features
