@@ -35,10 +35,10 @@ To use the package to train your own models:
   - The input arguement is the path to your training datset.
   - The data will be shuffled automatically and split into training, testing, and validation sets (60%/20%/20%).
   - The parameters of the DBN can be changed in `sa_dbn.py` at line 471.
-    - `finetune_lr is` the learning rate used in finetune stage.
-    - `pretrainig_epochs` is the epochs employed in the pretraining stage.
-    - `k` is the number of Gibbs steps in CD/PCD.
-    - `training_epochs` is the maxical number of iterations ot run the optimizer.
-    - `batch_size` is the the size of a minibatch.
+    - `finetune_lr is` the learning rate used in finetune stage. Default is 0.2.
+    - `pretrainig_epochs` is the epochs employed in the pretraining stage. Default is 20.
+    - `k` is the number of Gibbs steps in CD/PCD. Default is 1.
+    - `training_epochs` is the maxical number of iterations ot run the optimizer. Default is 1000
+    - `batch_size` is the the size of a minibatch. Default is 50.
   - The best trained model will be saved as best_trained_model.pkl, which can be used for prediction later. Note that the model trained with GPU can only be used with GPU prediction.
 3. Run the 
