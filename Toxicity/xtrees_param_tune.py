@@ -142,6 +142,7 @@ def save_best_model(path,mtry,ml,ms):
         train_data = pickle.load(train_file)
         X = train_data[0]
         y = train_data[1]
+    print('Getting the best model.')
     ext = ExtraTreesClassifier(n_estimators=500, max_depth=None,
                                    min_samples_leaf=ml, max_features=mtry,
                                    min_samples_split=ms)
