@@ -17,6 +17,7 @@ from SemiLastLayer import SemiLastLayer
 from mlp import HiddenLayer
 from rbm import RBM
 from sa_logistic_sgd import load_data, test_load_data
+import argparse
 
 # change the device accordingly
 #device = 'cpu'
@@ -304,7 +305,7 @@ def save(obj, path):
 
 def test_DBN(finetune_lr=0.2, pretraining_epochs=20,
          pretrain_lr=0.01, k=1, training_epochs=1000,
-         dataset='/home/limeng/Desktop/toxicity/SA score prediction/code/sa-part-resampled.pkl', batch_size=50):
+         dataset='/home/limeng/Desktop/eToxPred/SA score prediction/code/sa-part-resampled.pkl', batch_size=50):
     """
     Demonstrates how to train and test a Deep Belief Network.
 
@@ -340,7 +341,7 @@ def test_DBN(finetune_lr=0.2, pretraining_epochs=20,
     print('... building the model')
     # construct the Deep Belief Network
     dbn = DBN(numpy_rng=numpy_rng, n_ins=1024,
-              hidden_layers_sizes=[1024, 512, 256, 128, 64, 32],
+              hidden_layers_sizes=[512, 128, 32],
               n_outs=1)
 
     # start-snippet-2
@@ -365,7 +366,6 @@ def test_DBN(finetune_lr=0.2, pretraining_epochs=20,
                                             lr=pretrain_lr))
             print('Pre-training layer %i, epoch %d, cost ' % (i, epoch), end=' ')
             print(numpy.mean(c))
-            pretrain_logstring = 'Pre-training layer %i, epoch %d, cost ' % (i, epoch) + str(numpy.mean(c))
 
     end_time = timeit.default_timer()
     # end-snippet-2
@@ -460,5 +460,14 @@ def test_DBN(finetune_lr=0.2, pretraining_epochs=20,
     print('The fine tuning code for file ' + os.path.split(__file__)[1] +
           ' ran for %.2fm' % ((end_time - start_time) / 60.), file=sys.stderr)
 
+def myargs():
+    parser = argparse.ArgumentParser()                                              
+    parser.add_argument('--input', '-i', required = True, help = 'input filename')
+    args = parser.parse_args()
+    return args
+
 if __name__ == '__main__':
-    test_DBN()
+    args = myargs()
+    test_DBN(finetune_lr=0.2, pretraining_epochs=20,
+         pretrain_lr=0.01, k=1, training_epochs=1000,
+         dataset=args.input, batch_size=50)
