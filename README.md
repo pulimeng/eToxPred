@@ -51,4 +51,4 @@ To use the package to train your own models:
 
 # Datasets:
 
-An example dataset that can be used for prediction (in the .sdf format) is provided in `fda_approved_nr.sdf`. The ready to used dataset for ET training is provided in toxicity folder. The dataset for DBN training can be found at
+An example dataset that can be used for prediction (in the .sdf format) is provided in `fda_approved_nr.sdf`. The ready to used dataset for ET training is provided in toxicity folder `toxicity_train.pkl`. The dataset for DBN training can be found at
