@@ -40,16 +40,14 @@ To use the package to train your own models:
     - `k` is the number of Gibbs steps in CD/PCD. Default is 1.
     - `training_epochs` is the maxical number of iterations ot run the optimizer. Default is 1000
     - `batch_size` is the the size of a minibatch. Default is 50.
-  - The best trained model will be saved as best_trained_model.pkl, which can be used for prediction later. Note that the model trained with GPU can only be used with GPU prediction.
-3. Train the ET for toxicity prediction.
-  - Select the best parameters automatically. Run `xtrees_param_tune.py` in the toxicity folder by `python xtrees_param_tube.py -i your_training_set.pkl`.
-    - The input arguement is the path to your training datset.
-    - The parameters to be tuned are:
-      - `min_samples_leaf`: The minimum number of samples required to be at a leaf node.
-      - `max_features`: The number of features to consider when looking for the best split.
-      - `min_samples_split`: The minimum number of samples required to split an internal node.
-    - The best set of parameters will be printed. Note that this step might take a long time. Progress will be printed in between.
-  - Use the tuned parameters to train the model. Change the parameters accordingly in the `xtrees.py` in the toxicity folder at line . Then run `python xtrees.py -i your_training_set.pkl`. The trained model will be saved as a .pkl file that can be load using joblib in `scikit-learn`.
+  - The best trained model will be saved as `best_sa_model.pkl`, which can be used for prediction later. Note that the model trained with GPU can only be used with GPU prediction.
+3. Train the ET for toxicity prediction. Select the best parameters automatically. Run `xtrees_param_tune.py` in the toxicity folder by `python xtrees_param_tube.py -i your_training_set.pkl`.
+  - The input arguement is the path to your training datset.
+  - The parameters to be tuned are:
+    - `min_samples_leaf`: The minimum number of samples required to be at a leaf node.
+    - `max_features`: The number of features to consider when looking for the best split.
+    - `min_samples_split`: The minimum number of samples required to split an internal node.
+  - The best set of parameters will be printed and the model will be saved as `best_tox_model.pkl`. Note that this step might take a long time. Progress will be printed in between.
 
 # Datasets:
 
