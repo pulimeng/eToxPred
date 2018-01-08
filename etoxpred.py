@@ -46,9 +46,12 @@ def myargs():
     return args
 
 def write2file(filename):
-    output_string = 'Predicted SAscore is: ' + str(predicted_values)+'\nTox-score is: '+ str(proba) + '\n'
-    with open(filename, 'w') as output_file:
-        output_file.write(output_string)
+    if filename == '<stdout>':
+        return
+    else:
+        output_string = 'Predicted SAscore is: ' + str(predicted_values)+'\nTox-score is: '+ str(proba) + '\n'
+        with open(filename, 'w') as output_file:
+            output_file.write(output_string)
 
 # load the data from a .sdf file
 def bits2string(x):
