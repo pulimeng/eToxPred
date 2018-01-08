@@ -30,4 +30,15 @@ To use the trained models for predictinos:
 3. The corresponding trianed models are in SAscore and toxicity folders respectively. The `trained_model_gpu.pkl` can be used when CUDA is installed and properly configured.
 
 To use the package to train your own models:
-1. Prepare the training dataset. For 
+1. Prepare the training dataset. The dataset contains two parts: the fingerprints and the label. The label can be the binary class labels for toxicity prediction or the SAscores. The dataset has to be stored in a .pkl file, which is a serialized Python structure used to store many objects.
+2. Run the sa_dbn.py in the SAscore folder by `python sa_dbn.py -i your_training_set.pkl`
+  - The input arguement is the path to your training datset.
+  - The data will be shuffled automatically and split into training, testing, and validation sets (60%/20%/20%).
+  - The parameters of the DBN can be changed in `sa_dbn.py` at line 471.
+    - `finetune_lr is` the learning rate used in finetune stage.
+    - `pretrainig_epochs` is the epochs employed in the pretraining stage.
+    - `k` is the number of Gibbs steps in CD/PCD.
+    - `training_epochs` is the maxical number of iterations ot run the optimizer.
+    - `batch_size` is the the size of a minibatch.
+  - The best trained model will be saved as best_trained_model.pkl, which can be used for prediction later. Note that the model trained with GPU can only be used with GPU prediction.
+3. Run the 
