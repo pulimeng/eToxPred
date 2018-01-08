@@ -31,7 +31,7 @@ To use the trained models for predictinos:
 
 To use the package to train your own models:
 1. Prepare the training dataset. The dataset contains two parts: the fingerprints and the label. The label can be the binary class labels for toxicity prediction or the SAscores. The dataset has to be stored in a .pkl file, which is a serialized Python structure used to store many objects.
-2. Run the sa_dbn.py in the SAscore folder by `python sa_dbn.py -i your_training_set.pkl`
+2. Train the DBN for SAscore prediction. Run the sa_dbn.py in the SAscore folder by `python sa_dbn.py -i your_training_set.pkl`
   - The input arguement is the path to your training datset.
   - The data will be shuffled automatically and split into training, testing, and validation sets (60%/20%/20%).
   - The parameters of the DBN can be changed in `sa_dbn.py` at line 471.
