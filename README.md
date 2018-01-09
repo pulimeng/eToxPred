@@ -52,4 +52,4 @@ To use the package to train your own models:
 
 # Datasets:
 
-An example dataset that can be used for prediction (in the .smi format) is provided in `example_data.smi`. The ready to used dataset for ET and DBN training can be found at `input websites here`. The data is in text format.
+An example dataset that can be used for prediction (in the .smi format) is provided in `example_data.smi`. The ready to used dataset for ET and DBN training can be found at `input websites here`. The data is in text format. The general format is fingerprint ID SAscore/Toxicity.
