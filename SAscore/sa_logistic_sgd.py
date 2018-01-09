@@ -44,6 +44,7 @@ import timeit
 
 import numpy
 import random
+import pybel
 import math
 
 import theano
@@ -172,14 +173,25 @@ class LogisticRegression(object):
         else:
             raise NotImplementedError()
 
-
 def load_data(dataset):
     with open(dataset, 'rb') as in_strm:
-        data = pickle.load(in_strm)
-    my_x = data[0]
-    my_x = numpy.asarray(my_x)
-    my_y = data[1]
-    my_y = numpy.asarray(my_y)
+        print('...Loading the data')
+        fps = []
+        sas = []
+        for line in in_strm.readlines():
+            if len(line) < 10:
+                continue 
+            newline = line.replace('\n','')
+            ll = newline.split(' ')
+            fp = ll[1]
+            fp_list = list(fp)
+            x = numpy.array(fp_list,dtype = float)
+            sa = ll[2]
+            y = float(sa)
+            fps.append(x)
+            sas.append(y)
+    my_x = numpy.asarray(fps)
+    my_y = numpy.asarray(sas)
     train_len = int(math.floor(0.6 * len(my_x)))
     vt_len = int(math.floor(0.2 * len(my_x)))
     train_set = (my_x[0:train_len], my_y[0:train_len])
@@ -228,11 +240,23 @@ def load_data(dataset):
 
 def test_load_data(dataset):
     with open(dataset, 'rb') as in_strm:
-        data = pickle.load(in_strm)
-    my_x = data[0][0:10]
-    my_x = numpy.asarray(my_x)
-    my_y = data[1][0:10]
-    my_y = numpy.asarray(my_y)
+        print('...Loading the data')
+        fps = []
+        sas = []
+        for line in in_strm.readlines():
+            if len(line) < 10:  
+                continue 
+            newline = line.replace('\n','')
+            ll = newline.split(' ')
+            fp = ll[1]
+            fp_list = list(fp)
+            x = numpy.array(fp_list,dtype = float)
+            sa = ll[2]
+            y = float(sa)
+            fps.append(x)
+            sas.append(y)
+    my_x = numpy.asarray(fps)
+    my_y = numpy.asarray(sas)
     train_len = int(math.floor(0.6 * len(my_x)))
     vt_len = int(math.floor(0.2 * len(my_x)))
     train_set = (my_x[0:train_len], my_y[0:train_len])
