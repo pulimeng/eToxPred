@@ -31,7 +31,7 @@ To use the trained models for predictinos:
 
 To use the package to train your own models:
 1. Prepare the training dataset. The dataset contains two parts: the fingerprints and the label. The label can be the binary class labels for toxicity prediction or the SAscores. The dataset has to be stored in a .pkl file, which is a serialized Python structure used to store many objects.
-2. Train the DBN for SAscore prediction. Run the `sa_dbn.py` in the SAscore folder by `python sa_dbn.py -i your_training_set.pkl`
+2. Train the DBN for SAscore prediction. Run the `sa_dbn.py` in the SAscore folder by `python sa_dbn.py -i your_training_set.txt`
   - The input arguement is the path to your training datset.
   - The data will be randomly split into training, testing, and validation sets (60%/20%/20%).
   - The parameters of the DBN can be changed in `sa_dbn.py` at line 471.
@@ -41,7 +41,7 @@ To use the package to train your own models:
     - `training_epochs` is the maxical number of iterations ot run the optimizer. Default is 1000
     - `batch_size` is the the size of a minibatch. Default is 50.
   - The best trained model will be saved as `best_sa_model.pkl`, which can be used for prediction later. Note that the model trained with GPU can only be used with GPU prediction.
-3. Train the ET for toxicity prediction. Select the best parameters automatically. Run `xtrees_param_tune.py` in the toxicity folder by `python xtrees_param_tube.py -i your_training_set.pkl`.
+3. Train the ET for toxicity prediction. Select the best parameters automatically. Run `xtrees_param_tune.py` in the toxicity folder by `python xtrees_param_tube.py -i your_training_set.txt`.
   - The input arguement is the path to your training datset.
   - The parameters to be tuned are:
     - `min_samples_leaf`: The minimum number of samples required to be at a leaf node.
