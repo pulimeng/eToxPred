@@ -26,12 +26,27 @@ def myargs():
     return args
 
 # load the .mat format data
-def load_data(path):
-    with open(path, 'rb') as train_file:
-        train_data = pickle.load(train_file)
-        fps = train_data[0]
-        labels = train_data[1]
-        X, Xt, y, yt = train_test_split(fps, labels, random_state=233)
+def load_data(dataset):
+    fps = []
+    with open(dataset, 'rb') as in_strm:
+        print('...Loading the data')
+        fps = []
+        toxs = []
+        for line in in_strm.readlines():
+            if len(line) < 10:
+                continue 
+            newline = line.replace('\n','').replace('\r','')
+            ll = newline.split(' ')
+            fp = ll[1]
+            fp_list = list(fp)
+            x = np.array(fp_list,dtype = float)
+            tox = ll[2]
+            y = int(tox)
+            fps.append(x)
+            toxs.append(y)
+    my_x = np.asarray(fps)
+    my_y = np.asarray(toxs)
+    X, Xt, y, yt = train_test_split(my_x, my_y, random_state=233)
     return X, Xt, y, yt
 
 # set the parameters' range for the search
