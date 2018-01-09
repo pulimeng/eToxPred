@@ -28,7 +28,6 @@ from sa_dbn import DBN
 from sklearn.externals import joblib
 
 def argdet():
-    print(len(sys.argv))
     if len(sys.argv) == 1:
         print('Need input file!')
         exit()
@@ -70,9 +69,9 @@ def bits2string(x):
 
 def load_data(filename = 'fda_approved_nr.sdf'):
     fps = []
-    for mol in pybel.readfile('sdf', 'fda_approved_nr.sdf'):
+    for mol in pybel.readfile('smi', 'example_data.smi'):
         mol.addh()
-        temp_smiles = mol.data['SMILES_CANONICAL']
+        temp_smiles = mol.write('smi')
         smiles = pybel.readstring('smi',temp_smiles)
         fp_bits = smiles.calcfp().bits
         fp_string = bits2string(fp_bits)
