@@ -67,7 +67,7 @@ def bits2string(x):
     fp_string=''.join(reversed(fp_list)) #reverse bit order to match openbabel output
     return fp_string
 
-def load_data(filename = 'fda_approved_nr.sdf'):
+def load_data(filename):
     fps = []
     for mol in pybel.readfile('smi', 'example_data.smi'):
         mol.addh()
