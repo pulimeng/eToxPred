@@ -43,6 +43,7 @@ To use the package to train your own models:
   - The best trained model will be saved as `best_sa_model.pkl`, which can be used for prediction later. Note that the model trained with GPU can only be used with GPU prediction.
 3. Train the ET for toxicity prediction. Select the best parameters automatically. Run `xtrees_param_tune.py` in the toxicity folder by `python xtrees_param_tube.py -i your_training_set.txt`.
   - The input arguement is the path to your training datset.
+  - The input data should contain both toxic and non-toxic instances. Otherwise, the code will produce error since the model predicts everything to be toxic or non-toxic.
   - The parameters to be tuned are:
     - `min_samples_leaf`: The minimum number of samples required to be at a leaf node.
     - `max_features`: The number of features to consider when looking for the best split.
