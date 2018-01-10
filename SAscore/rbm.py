@@ -22,7 +22,7 @@ import os
 
 from theano.tensor.shared_randomstreams import RandomStreams
 
-from utils import tile_raster_images
+from sa_utils import tile_raster_images
 from sa_logistic_sgd import load_data
 
 
