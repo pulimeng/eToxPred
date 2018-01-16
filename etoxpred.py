@@ -69,7 +69,7 @@ def bits2string(x):
 
 def load_data(filename):
     fps = []
-    for mol in pybel.readfile('smi', 'example_data.smi'):
+    for mol in pybel.readfile('smi', filename):
         mol.addh()
         temp_smiles = mol.write('smi')
         smiles = pybel.readstring('smi',temp_smiles)
@@ -109,6 +109,7 @@ def predict(X_test, sa_model = 'sa_trained_model.pkl', tox_model = 'tox_trained_
 
 if __name__ == "__main__":
     args = argdet()
+    print args.input
     X = load_data(args.input)
     predicted_values,proba = predict(X,'SA_trained_model_cpu.pkl','Tox_trained_model.pkl') # if cuda is not installed, use the trained_model_cpu
     write2file(args.output, predicted_values, proba)
