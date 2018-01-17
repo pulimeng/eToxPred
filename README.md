@@ -24,9 +24,9 @@ The software package contains 2 parts:
 
 To use the trained models for predictinos:
 1. Download and extract the package. Make sure `etoxpred.py` and the other two folders (SAscore and toxicity) are in the same folder. Otherwise you have to chagne the path in the `etoxpred.py` (line 13 and 14).
-2. Run the eToxPred by `python etoxpred.py -i example_data.smi -o output`
+2. Run the eToxPred by `python etoxpred.py -i tcm600_nr.smi -o output`
   - the first input argument `-i` specifies the input .smi file which stores the SMILES data.
-  - the second input argument `-o` specifies the output file to store the predicted SAscores and Tox-scores. Note that no file extension is needed since the program will produce two files `output_sa.txt` and `output_tox.txt` to store the predicted values respectively.
+  - the second input argument `-o` specifies the output file to store the predicted SAscores and Tox-scores. Note that no file extension is needed since the program will produce two files `output_sa.txt` and `output_tox.txt` to store the ID and predicted values respectively.
 3. The corresponding trianed models are in SAscore and toxicity folders respectively. The `trained_model_gpu.pkl` can be used when CUDA is installed and properly configured.
 
 To use the package to train your own models:
@@ -54,4 +54,4 @@ To use the package to train your own models:
 
 # Datasets:
 
-An example dataset that can be used for prediction (in the .smi format) is provided in `example_data.smi`. The ready to used dataset for ET and DBN training can be found at `https://osf.io/m4ah5/`. The data is in text format. The general format is SMILES string\tID\tSAscore/Toxicity. The results of our experiments in terms of SAscores and Tox-scores are also provied in `sa_results.txt` and `tox_results.txt`. Both ID and SAscore/Tox-score is included in the aforementioned files.
+An example test dataset that can be used for prediction (in the .smi format) is provided in `tcm600_nr.smi`. The ready to used dataset for ET and DBN training can be found at `https://osf.io/m4ah5/`. The data is in text format. The general format is SMILES string\tID\tSAscore/Toxicity. The results of our experiments in terms of SAscores and Tox-scores are also provied in `sa_results.txt` and `tox_results.txt`. Both ID and SAscore/Tox-score is included in the aforementioned files.
