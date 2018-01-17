@@ -31,7 +31,7 @@ To use the trained models for predictinos:
 
 To use the package to train your own models:
 1. Prepare the training dataset. The dataset contains two parts: the fingerprints and the label. The label can be the binary class labels for toxicity prediction or the SAscores. The dataset has to be stored in a .smi file in the format:
- [SMILES string\tID\tSAscore]
+ [SMILES string\tID\tLabel].
 2. Train the DBN for SAscore prediction. Run the `sa_dbn.py` in the SAscore folder by `python sa_dbn.py -i your_training_set.smi`
   - The input arguement is the path to your training datset. The data has to be in the format:
   - The data will be randomly split into training, testing, and validation sets (60%/20%/20%).
