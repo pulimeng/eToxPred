@@ -173,23 +173,30 @@ class LogisticRegression(object):
         else:
             raise NotImplementedError()
 
+def bits2string(x):
+    fp_string = '0'*1024
+    fp_list = list(fp_string)
+    for item in x:
+        fp_list[item-1] = '1'
+        fp_string=''.join(reversed(fp_list)) #reverse bit order to match openbabel output
+    return fp_string
+
 def load_data(dataset):
-    with open(dataset, 'rb') as in_strm:
-        print('...Loading the data')
-        fps = []
-        sas = []
-        for line in in_strm.readlines():
-            if len(line) < 10:
-                continue 
-            newline = line.replace('\n','')
-            ll = newline.split(' ')
-            fp = ll[1]
-            fp_list = list(fp)
-            x = numpy.array(fp_list,dtype = float)
-            sa = ll[2]
-            y = float(sa)
-            fps.append(x)
-            sas.append(y)
+    fps = []
+    sas = []
+    for mol in pybel.readfile('smi',dataset):
+        mol.addh()
+        temp_smi = mol.write('smi')
+        temp_smi.replace('\n','')
+        temp_list = temp_smi.split('\t')
+        smiles_str = temp_list[0]
+        smiles = pybel.readstring('smi',smiles_str)
+        y = float(temp_list[2])
+        fp_bits = smiles.calcfp().bits
+        fp_string = bits2string(fp_bits)
+        X = numpy.array(list(fp_string),dtype=float)
+        fps.append(X)
+        sas.append(y)
     my_x = numpy.asarray(fps)
     my_y = numpy.asarray(sas)
     train_len = int(math.floor(0.6 * len(my_x)))
@@ -206,7 +213,6 @@ def load_data(dataset):
 
     def shared_dataset(data_xy, borrow=True):
         """ Function that loads the dataset into shared variables
-
         The reason we store our dataset in shared variables is to allow
         Theano to copy it into the GPU memory (when code is run on GPU).
         Since copying data into the GPU is slow, copying a minibatch everytime
@@ -239,22 +245,22 @@ def load_data(dataset):
 
 
 def test_load_data(dataset):
-    with open(dataset, 'rb') as in_strm:
-        print('...Loading the data')
-        fps = []
-        sas = []
-        for line in in_strm.readlines():
-            if len(line) < 10:  
-                continue 
-            newline = line.replace('\n','')
-            ll = newline.split(' ')
-            fp = ll[1]
-            fp_list = list(fp)
-            x = numpy.array(fp_list,dtype = float)
-            sa = ll[2]
-            y = float(sa)
-            fps.append(x)
-            sas.append(y)
+    print('...Loading the data')
+    fps = []
+    sas = []
+    for mol in pybel.readfile('smi',dataset):
+        mol.addh()
+        temp_smi = mol.write('smi')
+        temp_smi.replce('\n','')
+        temp_list = temp_smi.split('\t')
+        smiles_str = temp_list[0]
+        smiles = pybel.readstring('smi',smiles_str)
+        y = float(temp_list[2])
+        fp_bits = smiles.calcfp().bits
+        fp_string = bits2string(fp_bits)
+        X = numpy.array(list(fp_string),dtype=float)
+        fps.append(X)
+        sas.append(y)
     my_x = numpy.asarray(fps)
     my_y = numpy.asarray(sas)
     train_len = int(math.floor(0.6 * len(my_x)))
@@ -271,7 +277,6 @@ def test_load_data(dataset):
 
     def shared_dataset(data_xy, borrow=True):
         """ Function that loads the dataset into shared variables
-
         The reason we store our dataset in shared variables is to allow
         Theano to copy it into the GPU memory (when code is run on GPU).
         Since copying data into the GPU is slow, copying a minibatch everytime
