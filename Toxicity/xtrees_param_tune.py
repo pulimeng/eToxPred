@@ -59,11 +59,11 @@ def load_data(dataset):
 
 # set the parameters' range for the search
 def setgrid():
-    mtry = np.linspace(10, 100, 2) # max_features
+    mtry = np.linspace(10, 100, 91) # max_features
     mtry = mtry.astype('uint8')
-    ml = np.linspace(3, 20, 2) # min_leaf
+    ml = np.linspace(3, 20, 18) # min_leaf
     ml = ml.astype('uint8')
-    ms = np.linspace(5, 20, 2) # min_split
+    ms = np.linspace(5, 20, 16) # min_split
     ms = ms.astype('uint8')
     grid = (mtry,ml,ms)
     return grid
