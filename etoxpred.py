@@ -48,14 +48,19 @@ def myargs():
     args = parser.parse_args()
     return args
 
-def write2file(filename, predicted_values, proba):
+def write2file(filename, ids, predicted_values, proba):
+    ids = np.array(ids)
+    ids = np.reshape(ids,(ids.shape[0],1))
+    proba = np.reshape(proba,(len(proba),1))
     sa_filename = filename + '_sa.txt'
+    sa_data = np.concatenate((ids,predicted_values),axis = 1)
     with open(sa_filename, 'w') as sa_output_file:
-        np.savetxt(sa_filename, predicted_values, fmt = '%1.4f')
+        np.savetxt(sa_filename, sa_data, delimiter = ' ', fmt = '%s')
     sa_output_file.close()
     tox_filename = filename + '_tox.txt'
+    tox_data = np.concatenate((ids, proba),axis = 1)
     with open(tox_filename, 'w') as tox_output_file:
-        np.savetxt(tox_filename, proba, fmt = '%1.4f')
+        np.savetxt(tox_filename, tox_data, delimiter = ' ', fmt = '%s')
     tox_output_file.close()
         
 # load the data from a .sdf file
@@ -69,17 +74,20 @@ def bits2string(x):
 
 def load_data(filename):
     fps = []
+    ids = []
     for mol in pybel.readfile('smi', filename):
         mol.addh()
         temp_smiles = mol.write('smi')
         smiles = pybel.readstring('smi',temp_smiles)
+        mol_id = mol.title
         fp_bits = smiles.calcfp().bits
         fp_string = bits2string(fp_bits)
         # convert the data from string to a numpy matrix
         X = np.array(list(fp_string),dtype=float)
         fps.append(X)
+        ids.append(mol_id)
     fps = np.asarray(fps)
-    return fps
+    return fps,ids
 
 # define the prediction function
 def predict(X_test, sa_model = 'sa_trained_model.pkl', tox_model = 'tox_trained_model.pkl'):
@@ -109,7 +117,6 @@ def predict(X_test, sa_model = 'sa_trained_model.pkl', tox_model = 'tox_trained_
 
 if __name__ == "__main__":
     args = argdet()
-    print args.input
-    X = load_data(args.input)
+    X, ids = load_data(args.input)
     predicted_values,proba = predict(X,'SA_trained_model_cpu.pkl','Tox_trained_model.pkl') # if cuda is not installed, use the trained_model_cpu
-    write2file(args.output, predicted_values, proba)
+    write2file(args.output, ids, predicted_values, proba)
