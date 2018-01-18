@@ -164,7 +164,7 @@ def start_tuning(path, grid):
     
     
 def save_best_model(path,mtry,ml,ms,X,y):
-    print('Getting the best model.')
+    print('...getting the best model')
     ext = ExtraTreesClassifier(n_estimators=500, max_depth=None,
                                    min_samples_leaf=ml, max_features=mtry,
                                    min_samples_split=ms)
