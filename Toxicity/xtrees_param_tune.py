@@ -11,6 +11,7 @@ from __future__ import division
 import pickle
 import numpy as np
 from itertools import cycle
+import pybel
 
 import argparse
 
@@ -26,24 +27,31 @@ def myargs():
     return args
 
 # load the .mat format data
+def bits2string(x):
+    fp_string = '0'*1024
+    fp_list = list(fp_string)
+    for item in x:
+        fp_list[item-1] = '1'
+        fp_string=''.join(reversed(fp_list)) #reverse bit order to match openbabel output
+    return fp_string
+
 def load_data(dataset):
+    print '...loading the data'
     fps = []
-    with open(dataset, 'rb') as in_strm:
-        print('...Loading the data')
-        fps = []
-        toxs = []
-        for line in in_strm.readlines():
-            if len(line) < 10:
-                continue 
-            newline = line.replace('\n','').replace('\r','')
-            ll = newline.split(' ')
-            fp = ll[1]
-            fp_list = list(fp)
-            x = np.array(fp_list,dtype = float)
-            tox = ll[2]
-            y = int(tox)
-            fps.append(x)
-            toxs.append(y)
+    toxs = []
+    for mol in pybel.readfile('smi',dataset):
+        mol.addh()
+        temp_smi = mol.write('smi')
+        temp_smi.replace('\n','')
+        temp_list = temp_smi.split('\t')
+        smiles_str = temp_list[0]
+        smiles = pybel.readstring('smi',smiles_str)
+        y = int(temp_list[2])
+        fp_bits = smiles.calcfp().bits
+        fp_string = bits2string(fp_bits)
+        X = np.array(list(fp_string),dtype=float)
+        fps.append(X)
+        toxs.append(y)
     my_x = np.asarray(fps)
     my_y = np.asarray(toxs)
     X, Xt, y, yt = train_test_split(my_x, my_y, random_state=233)
@@ -51,11 +59,11 @@ def load_data(dataset):
 
 # set the parameters' range for the search
 def setgrid():
-    mtry = np.linspace(10, 100, 91) # max_features
+    mtry = np.linspace(10, 100, 2) # max_features
     mtry = mtry.astype('uint8')
-    ml = np.linspace(3, 20, 18) # min_leaf
+    ml = np.linspace(3, 20, 2) # min_leaf
     ml = ml.astype('uint8')
-    ms = np.linspace(5, 20, 16) # min_split
+    ms = np.linspace(5, 20, 2) # min_split
     ms = ms.astype('uint8')
     grid = (mtry,ml,ms)
     return grid
@@ -146,17 +154,16 @@ def start_tuning(path, grid):
         best_ms = ms[c]
         print('The best ml is: '+str(best_ml))
         print('The best ms is: '+str(best_ms))
+        print('=============================')
         evaluation_list.append(metrics)
         best_mcc, best_mtry, best_ml, best_ms = update(current_mcc, max_mcc, temp_mtry, best_ml, best_ms)
         current_mcc = best_mcc
-    return best_mcc, best_mtry, best_ml, best_ms
+        final_X = np.concatenate((X,Xt))
+        final_y = np.concatenate((y,yt))
+    return final_X, final_y, best_mcc, best_mtry, best_ml, best_ms
     
     
-def save_best_model(path,mtry,ml,ms):
-    with open(path, 'rb') as train_file:
-        train_data = pickle.load(train_file)
-        X = train_data[0]
-        y = train_data[1]
+def save_best_model(path,mtry,ml,ms,X,y):
     print('Getting the best model.')
     ext = ExtraTreesClassifier(n_estimators=500, max_depth=None,
                                    min_samples_leaf=ml, max_features=mtry,
@@ -167,5 +174,5 @@ def save_best_model(path,mtry,ml,ms):
 if __name__ == "__main__":
     args = myargs()
     grid = setgrid()
-    best_mcc, best_mtry, best_ml, best_ms = start_tuning(args.input ,grid)
-    save_best_model(args.input,best_mtry, best_ml, best_ms)
+    X, y, best_mcc, best_mtry, best_ml, best_ms = start_tuning(args.input ,grid)
+    save_best_model(args.input,best_mtry, best_ml, best_ms, X, y)
