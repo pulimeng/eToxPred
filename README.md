@@ -9,11 +9,12 @@ Limeng Pu, Misagh Naderi, Tairan Liu, Hsiao-Chun Wu, Supratik Mukhopadhyay, and 
 
 # Prerequisites:
 1. Python 2.7+ or Python 3.5+
-2. numpy 1.8.2 or higher
-3. scipy 0.13.3 or higher
-4. scikit-learn 0.18.1 (higher version can produce error due to the model is trained using this version)
-5. Openbabel 2.3.1
-6. (Optional) CUDA 8.0 or higher
+2. Theano
+3. numpy 1.8.2 or higher
+4. scipy 0.13.3 or higher
+5. scikit-learn 0.18.1 (higher version can produce error due to the model is trained using this version)
+6. Openbabel 2.3.1
+7. (Optional) CUDA 8.0 or higher
 
 
 # Usage:
