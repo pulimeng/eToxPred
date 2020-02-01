@@ -55,4 +55,4 @@ To use the package to train your own models:
 
 # Datasets:
 
-An example test dataset that can be used for prediction (in the .smi format) is provided in `tcm600_nr.smi`. The ready to used dataset for ET and DBN training can be found at `https://osf.io/m4ah5/`. The data is in text format. The general format is SMILES string\tID\tSAscore/Toxicity. The results of our experiments in terms of SAscores and Tox-scores are also provied in `sa_results.txt` and `tox_results.txt`. Both ID and SAscore/Tox-score is included in the aforementioned files.
+An example test dataset that can be used for prediction (in the .smi format) is provided in `tcm600_nr.smi`. The ready to used dataset for ET and DBN training can be found at `https://osf.io/m4ah5/`. The data is in text format. The general format is SMILES string\tID\tSAscore/Toxicity. The results of our experiments in terms of SAscores and Tox-scores are also provied in `train_SA_data.smi` and `train_Tox_data.smi`. Both ID and SAscore/Tox-score is included in the aforementioned files.
