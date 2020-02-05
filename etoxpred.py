@@ -106,9 +106,7 @@ def predict(X_test, sa_model = 'sa_trained_model.pkl', tox_model = 'tox_trained_
         outputs=y_pred)
     X_test = X_test.astype(np.float32)
     predicted_values = predict_model(X_test)
-    # the SAscore here is between 0 and 1 to suit the range of the activation function
-    # the following line converts the output to between 1 and 10
-    predicted_values = np.asarray(predicted_values*10)
+    predicted_values = np.asarray(predicted_values)
     predicted_values = np.reshape(predicted_values,(len(predicted_values),1))
     xtree = joblib.load(tox_model)
     proba = xtree.predict_proba(X_test)[:,1]
