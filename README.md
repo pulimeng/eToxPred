@@ -9,8 +9,9 @@ Pu, L., Naderi, M., Liu, T. et al. eToxPred: a machine learning-based approach t
 
 # Prerequisites:
 1. Python 3.7.*
-2. scikit-learn 2.3.*
-3. rdkit 2020.03.1
+2. Pandas 1.0 or higher
+3. scikit-learn 2.3.*
+4. rdkit 2020.03.1
 
 # Usage:
 
