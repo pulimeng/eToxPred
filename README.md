@@ -1,5 +1,5 @@
 # eToxPred
-eToxPred is a tool to reliably estimate the toxicity and synthetic accessibility of small organic compounds.
+eToxPred is a tool to reliably estimate the toxicity and synthetic accessibility of small organic compounds. This is a newer implementation. The libraries used have been updated and the Deep Belief Network (DBN) for the SA score prediction has been replaced by the exact SA score calculation.
 
 This README file is written by Limeng PU. 
 
@@ -8,19 +8,14 @@ If you find this tool is useful to you, please cite this paper:
 Limeng Pu, Misagh Naderi, Tairan Liu, Hsiao-Chun Wu, Supratik Mukhopadhyay, and Michal Brylinski. "eToxPred: A Machine Learning-Based Approach to Estimate the Toxicity of Drug Candidates."
 
 # Prerequisites:
-1. Python 2.7+ or Python 3.5+
-2. Theano
-3. numpy 1.8.2 or higher
-4. scipy 0.13.3 or higher
-5. scikit-learn 0.18.1 (higher version can produce error due to the model is trained using this version)
-6. Openbabel 2.3.1
-7. (Optional) CUDA 8.0 or higher
-
+1. Python 3.7.*
+2. scikit-learn 2.3.*
+3. rdkit 2020.03.1
 
 # Usage:
 
 The software package contains 2 parts:
-1. SAscore prediction (in the folder SAscore)
+1. SAscore calculation (in the folder SAscore)
 2. Toxicity prediction (in the folder toxicity)
 
 To use the trained models for predictinos:
