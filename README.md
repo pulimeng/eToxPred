@@ -1,5 +1,5 @@
 # eToxPred
-eToxPred is a tool to reliably estimate the toxicity and synthetic accessibility of small organic compounds. This is a newer implementation. The libraries used have been updated and the Deep Belief Network (DBN) for the SA score prediction has been replaced by the exact SA score calculation.
+eToxPred is a tool to reliably estimate the toxicity and synthetic accessibility of small organic compounds. **This is a newer implementation. The libraries used have been updated and the Deep Belief Network (DBN) for the SA score prediction has been replaced by the exact SA score calculation. For older implementation please refer to the folder /stale.**
 
 This README file is written by Limeng PU. 
 
