@@ -26,7 +26,7 @@ To use the trained models for predictinos:
 3. The corresponding trianed models are in SAscore and toxicity folders respectively. The `trained_model_gpu.pkl` can be used when CUDA is installed and properly configured.
 
 To use the package to train your own models:
-1. Prepare the training dataset. The dataset contains two parts: the fingerprints and the label. The label can be the binary class labels for toxicity prediction or the SAscores. The dataset has to be stored in a .smi file in the format:
+1. Prepare the training dataset. The dataset contains two parts: the fingerprints and the label. The label can be the binary class labels for toxicity prediction or the SAscores. The dataset has to be stored in a .smi file, where each field is separated by a tab, in the format:
  [SMILES string\tID\tLabel].
 2. Train the ET for toxicity prediction. Select the best parameters automatically. Run `xtrees_param_tune.py` in the toxicity folder by `python xtrees_param_tube.py -i your_training_set.txt`.
   - The input arguement is the path to your training datset.
