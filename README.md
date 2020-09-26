@@ -30,7 +30,7 @@ To use the trained models for predictinos:
 To use the package to train your own models:
 1. Prepare the training dataset. The dataset contains three parts: the smiles, the name of the compound, and the label. The label is 0 or 1, where 0 means safe and 1 means toxic. The dataset has to be stored in a .smi file, where each field is separated by a tab, in the format:
  [SmilesString\tID\tLabel].
-2. Train the ET for toxicity prediction. The code provided performs a randomized parameter search. It will return the best result (depending on chosen metric), parameters (.json format), and the model (.joblib format). Run `etoxpred_train.py` in by `python etoxpred_train.py --datafile your_training_data.smi --paramfile params.json --outputfile ./test --iter 3 --scorer balanced_accuracy`.
+2. Train the ET for toxicity prediction. The code provided performs a randomized parameter search. It will return the best result (depending on chosen metric), parameters (.json format), and the model (.joblib format). Run `etoxpred_train.py` in by `python etoxpred_train.py --datafile your_training_set.smi --paramfile params.json --outputfile best_model --iter 3 --scorer balanced_accuracy`.
   - `--datafile` specifies the path to your training datset with the aforementioned format.
   - `--paramfile` specifies the parameter file contains the parameters and the range/distribution of them that you want to search for during the training. An example file is provided, namely `param.json`. More parameters can be added according to https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html.
     - `--outputfile` specifies the output file to store the best model. If this term is not provided, the code will save the output to `best_model.joblib`.
