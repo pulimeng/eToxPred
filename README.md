@@ -20,25 +20,23 @@ The software package contains 2 parts:
 2. Toxicity prediction (in the folder toxicity)
 
 To use the trained models for predictinos:
-1. Download and extract the package. Make sure `etoxpred.py` and the other two folders (SAscore and toxicity) are in the same folder. Otherwise you have to chagne the path in the `etoxpred.py` (line 13 and 14).
-2. Run the eToxPred by `python etoxpred.py -i tcm600_nr.smi -o output`
-  - the first input argument `-i` specifies the input .smi file which stores the SMILES data.
-  - the second input argument `-o` specifies the output file to store the predicted SAscores and Tox-scores. Note that no file extension is needed since the program will produce two files `output_sa.txt` and `output_tox.txt` to store the ID and predicted values respectively.
-3. The corresponding trianed models are in SAscore and toxicity folders respectively. The `trained_model_gpu.pkl` can be used when CUDA is installed and properly configured.
+1. Download and extract the package.
+2. Run the eToxPred by `python etoxpred_prediction.py --datafile tcm600_nr.smi --modelfile etoxpred_best_model.joblib --outputfile results.csv`
+  - `--datafile` specifies the input .smi file which stores the SMILES data.
+  - `--modelfile` specifies the location of the trained model.
+  - `--outputfile` specifies the output file to store the predicted SAscores and Tox-scores. If this term is not provided, the code will save the output to `./results.csv`.
+3. The trianed toxicity model are provided as `etoxpred_best_model.joblib`.
 
 To use the package to train your own models:
-1. Prepare the training dataset. The dataset contains two parts: the fingerprints and the label. The label can be the binary class labels for toxicity prediction or the SAscores. The dataset has to be stored in a .smi file, where each field is separated by a tab, in the format:
+1. Prepare the training dataset. The dataset contains three parts: the smiles, the name of the compound, and the label. The label is 0 or 1, where 0 means safe and 1 means toxic. The dataset has to be stored in a .smi file, where each field is separated by a tab, in the format:
  [SmilesString\tID\tLabel].
-2. Train the ET for toxicity prediction. Select the best parameters automatically. Run `xtrees_param_tune.py` in the toxicity folder by `python xtrees_param_tube.py -i your_training_set.txt`.
-  - The input arguement is the path to your training datset.
-  - The input data should contain both toxic and non-toxic instances. Otherwise, the code will produce error since the model predicts everything to be toxic or non-toxic.
-  - The parameters to be tuned are:
-    - `min_samples_leaf`: The minimum number of samples required to be at a leaf node.
-    - `max_features`: The number of features to consider when looking for the best split.
-    - `min_samples_split`: The minimum number of samples required to split an internal node.
-  - The tuning range can be set in the `setgrid()` function in `xtrees_param_tune.py`.
-  - The best set of parameters will be printed and the model will be saved as `best_tox_model.pkl`. Note that this step might take a long time. Progress will be printed in between.
+2. Train the ET for toxicity prediction. The code provided performs a randomized parameter search. It will return the best result (depending on chosen metric), parameters (.json format), and the model (.joblib format). Run `etoxpred_train.py` in by `python etoxpred_train.py --datafile your_training_data.smi --paramfile params.json --outputfile ./test --iter 3 --scorer balanced_accuracy`.
+  - `--datafile` specifies the path to your training datset with the aforementioned format.
+  - `--paramfile` specifies the parameter file contains the parameters and the range/distribution of them that you want to search for during the training. An example file is provided, namely `param.json`. More parameters can be added according to https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html.
+    - `--outputfile` specifies the output file to store the best model. If this term is not provided, the code will save the output to `best_model.joblib`.
+    - `--iter` is the number of iterations to run the randomized search.
+    - `--scorer` is the metric to evaluate the performance of each run. It defaultly uses `balanced_accuracy`. recommanded metrics include `balanced_accuracy`, `f1`, and `roc_auc`.
 
 # Datasets:
 
-An example test dataset that can be used for prediction (in the .smi format) is provided in `tcm600_nr.smi`. The ready to used dataset for ET and DBN training can be found at `https://osf.io/m4ah5/`. The data is in text format. The general format is SMILES string\tID\tSAscore/Toxicity. The results of our experiments in terms of SAscores and Tox-scores are also provied in `sa_results.txt` and `tox_results.txt`. Both ID and SAscore/Tox-score is included in the aforementioned files.
+An example test dataset that can be used for prediction (in the .smi format) is provided in `tcm600_nr.smi`. The ready to use dataset for ET training is provided in `trainig_set.smi`. Much larger dataset for training can be found at `https://osf.io/m4ah5/`. The general format is SmilesString\tID\tToxicity. The results of our experiments in terms of SAscores and Tox-scores are also provied in `tcm_results.csv`.
