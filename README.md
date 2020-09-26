@@ -25,7 +25,7 @@ To use the trained models for predictinos:
   - `--datafile` specifies the input .smi file which stores the SMILES data.
   - `--modelfile` specifies the location of the trained model.
   - `--outputfile` specifies the output file to store the predicted SAscores and Tox-scores. If this term is not provided, the code will save the output to `./results.csv`.
-3. The trianed toxicity model is provided as `etoxpred_best_model.joblib` at link here due to the size limitation.
+3. The trianed toxicity model is provided as `etoxpred_best_model.tar.gz`. Please untar before use.
 
 To use the package to train your own models:
 1. Prepare the training dataset. The dataset contains three parts: the smiles, the name of the compound, and the label. The label is 0 or 1, where 0 means safe and 1 means toxic. The dataset has to be stored in a .smi file, where each field is separated by a tab, in the format:
@@ -39,4 +39,4 @@ To use the package to train your own models:
 
 # Datasets:
 
-An example test dataset that can be used for prediction (in the .smi format) is provided in `tcm600_nr.smi`. The ready to use dataset for ET training is provided in `trainig_set.smi`. Much larger dataset for training can be found at `https://osf.io/m4ah5/`. The general format is SmilesString\tID\tToxicity. The results of the training set are provided in `etoxpred_best_results.csv`. The results of the testing set TCM6000_NR are also provied in `tcm_results.csv`.
+An example test dataset that can be used for prediction (in the .smi format) is provided in `tcm600_nr.smi`. The ready to use dataset for ET training is provided in `trainig_set.smi`. Much larger dataset for training can be found at `https://osf.io/m4ah5/`. The general format is SmilesString\tID\tToxicity. The results of the testing set TCM6000_NR are also provied in `tcm_results.csv`.
