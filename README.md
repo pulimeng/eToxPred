@@ -16,8 +16,8 @@ Pu, L., Naderi, M., Liu, T. et al. eToxPred: a machine learning-based approach t
 # Usage:
 
 The software package contains 2 parts:
-1. SAscore calculation (in the folder SAscore)
-2. Toxicity prediction (in the folder toxicity)
+1. SAscore calculation
+2. Toxicity prediction
 
 To use the trained models for predictinos:
 1. Download and extract the package.
