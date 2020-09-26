@@ -39,4 +39,4 @@ To use the package to train your own models:
 
 # Datasets:
 
-An example test dataset that can be used for prediction (in the .smi format) is provided in `tcm600_nr.smi`. The ready to use dataset for ET training is provided in `trainig_set.smi`. Much larger dataset for training can be found at `https://osf.io/m4ah5/`. The general format is SmilesString\tID\tToxicity. The results of our experiments in terms of SAscores and Tox-scores are also provied in `tcm_results.csv`.
+An example test dataset that can be used for prediction (in the .smi format) is provided in `tcm600_nr.smi`. The ready to use dataset for ET training is provided in `trainig_set.smi`. Much larger dataset for training can be found at `https://osf.io/m4ah5/`. The general format is SmilesString\tID\tToxicity. The results of the training set are provided in `etoxpred_best_results.csv`. The results of the testing set TCM6000_NR are also provied in `tcm_results.csv`.
