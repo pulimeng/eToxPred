@@ -21,7 +21,7 @@ The software package contains 2 parts:
 
 To use the trained models for predictinos:
 1. Download and extract the package.
-2. Run the eToxPred by `python etoxpred_prediction.py --datafile tcm600_nr.smi --modelfile etoxpred_best_model.joblib --outputfile results.csv`
+2. Run the eToxPred by `python etoxpred_predict.py --datafile tcm600_nr.smi --modelfile etoxpred_best_model.joblib --outputfile results.csv`
   - `--datafile` specifies the input .smi file which stores the SMILES data.
   - `--modelfile` specifies the location of the trained model.
   - `--outputfile` specifies the output file to store the predicted SAscores and Tox-scores. If this term is not provided, the code will save the output to `./results.csv`.
