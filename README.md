@@ -35,7 +35,7 @@ To use the package to train your own models:
   - `--paramfile` specifies the parameter file contains the parameters and the range/distribution of them that you want to search for during the training. An example file is provided, namely `param.json`. More parameters can be added according to https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html.
     - `--outputfile` specifies the output file to store the best model. If this term is not provided, the code will save the output to `best_model.joblib`.
     - `--iter` is the number of iterations to run the randomized search.
-    - `--scorer` is the metric to evaluate the performance of each run. It defaultly uses `balanced_accuracy`. recommanded metrics include `balanced_accuracy`, `f1`, and `roc_auc`.
+    - `--scorer` is the metric to evaluate the performance of each run. It defaultly uses `balanced_accuracy`. recommanded metrics include `accuracy`, `balanced_accuracy`, `f1`, and `roc_auc`.
 
 # Datasets:
 
