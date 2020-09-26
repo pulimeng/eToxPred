@@ -39,7 +39,7 @@ def load_data(filename):
     """
     df = pd.read_csv(filename, sep='\t', names=['smiles', 'name', 'toxicity'])
     smiles_list = df['smiles'].tolist()
-    mols = [Chem.MolFromSmiles(x, sanitize=False) for x in smiles_list]
+    mols = [Chem.MolFromSmiles(x) for x in smiles_list]
     labels = df['toxicity'].tolist()
     X = []
     y = []
