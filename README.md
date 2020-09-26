@@ -25,7 +25,7 @@ To use the trained models for predictinos:
   - `--datafile` specifies the input .smi file which stores the SMILES data.
   - `--modelfile` specifies the location of the trained model.
   - `--outputfile` specifies the output file to store the predicted SAscores and Tox-scores. If this term is not provided, the code will save the output to `./results.csv`.
-3. The trianed toxicity model is provided as `etoxpred_best_model.tar.gz`. Please untar before use.
+3. The trianed toxicity model is provided as `etoxpred_best_model.tar.gz`. Please untar before use. For those who wonder, the best parameter setup is `n_estimators` 550, `min_samples_split` 16, `min_samples_leaf` 3, and `max_features` 10.
 
 To use the package to train your own models:
 1. Prepare the training dataset. The dataset contains three parts: the smiles, the name of the compound, and the label. The label is 0 or 1, where 0 means safe and 1 means toxic. The dataset has to be stored in a .smi file, where each field is separated by a tab, in the format:
