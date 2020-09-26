@@ -31,7 +31,7 @@ def load_data(filename):
     Input: filename -> path to the .smi file in the format of SmilesString\tCompoundName\tLabel
     Output: two arrays X -> fingerprints, y -> labels
     """
-    df = pd.read_csv(filename, sep=' ', names=['smiles', 'name'])
+    df = pd.read_csv(filename, sep='\t', names=['smiles', 'name'])
     smiles_list = df['smiles'].tolist()
     mols = [Chem.MolFromSmiles(x) for x in smiles_list]
     names = df['name'].tolist()
@@ -64,7 +64,7 @@ def predict(opt):
         sa_score = reg(smiles_list[i])
         df.at[i, 'name'] = names[i]
         df.at[i, 'smiles'] = smiles_list[i]
-        df.at[i, 'Tox-score'] = tox_score
+        df.at[i, 'Tox-score'] = tox_score[0]
         df.at[i, 'SAscore'] = sa_score
     print('...prediction done!')
     df.to_csv(opt.outputfile, index=False)
