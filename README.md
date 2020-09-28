@@ -3,8 +3,7 @@ eToxPred is a tool to reliably estimate the toxicity and calculate the synthetic
 
 This README file is written by Limeng PU. 
 
-If you find this tool is useful to you, please cite this paper:
-
+If you find this tool is useful to you, please cite our paper:
 Pu, L., Naderi, M., Liu, T. et al. eToxPred: a machine learning-based approach to estimate the toxicity of drug candidates. BMC Pharmacol Toxicol 20, 2 (2019). https://doi.org/10.1186/s40360-018-0282-6
 
 # Prerequisites:
