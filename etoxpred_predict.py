@@ -10,6 +10,7 @@ import numpy as np
 
 from sascore import SAscore
 from joblib import load
+import sklearn
 
 rdBase.DisableLog('rdApp.error')
 
@@ -51,11 +52,11 @@ def load_data(filename):
     return X, smiles_list, names
 
 def predict(opt):
-    df = pd.DataFrame(columns=['name', 'smiles', 'Tox-score', 'SAscore'])
+    df = pd.DataFrame(['name', 'smiles', 'Tox-score', 'SAscore'])
     # laod the data
     X, smiles_list, names = load_data(opt.datafile)
     # load the saved model and make predictions
-    print('...loading models')
+    print('...loading models', sklearn.__version__)
     clf = load(opt.modelfile)
     reg = SAscore()
     print('...starts prediction')
