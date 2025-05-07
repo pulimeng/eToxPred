@@ -6,13 +6,30 @@ This README file is written by Limeng PU.
 If you find this tool is useful to you, please cite our paper:
 Pu, L., Naderi, M., Liu, T. et al. eToxPred: a machine learning-based approach to estimate the toxicity of drug candidates. BMC Pharmacol Toxicol 20, 2 (2019). https://doi.org/10.1186/s40360-018-0282-6
 
+# Create virtual python3.7 env
+1. sudo add-apt-repository ppa:deadsnakes/ppa
+2. sudo apt update
+3. sudo apt install python3.7
+4. sudo apt install python3.7-venv
+5. python3.7 -m venv .venv
+6. source .venv/bin/activate
+7. python -V 
+8. Confirm the version of python. 
+
+# Install below requirements
+
+1. pip install -r requirements.txt
+
 # Prerequisites:
 1. Python 3.7.*
 2. Pandas 1.0 or higher
-3. scikit-learn 2.3.*
-4. rdkit 2020.03.1
+3. scikit-learn==0.23.2
+4. rdkit-pypi==2021.3.5
 
 # Usage:
+
+Extract etoxpred_best_model.tar.gz 
+1. tar -xzf toxpred_best_model.tar.gz 
 
 The software package contains 2 parts:
 1. SAscore calculation
